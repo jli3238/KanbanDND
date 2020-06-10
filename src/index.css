@@ -7,7 +7,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+div .board {
+  display: flex;
 }
+
+div .board .column {
+  flex-grow: 1;
+  margin: 25px;
+  padding: 20px;
+  height: 80vh;
+}
+
+div .board .column .column-body {
+  padding-top: 20px;
+  background-color: olivedrab;
+  height: 70vh;
+}
+
+div .board .column .card {
+  background-color: white;
+  margin: 20px;
+  padding: 10px;
+  color: olivedrab;
+}
+
+
