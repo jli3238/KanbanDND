@@ -14,17 +14,20 @@ const App = () => {
       } catch (error) { console.log(error); }
   }, []);
   const handleNewCardNameChange = (e) => {
-    if (e.target.value.trim() ==='') return;
-    setNewCardName(e.target.value.trim());
+    let existingCardNames = [];
+    for(let i=0; i<columns.length; i++) {
+      for(let j=0; j<columns[i].cards.length; j++) {
+        existingCardNames.push(columns[i].cards[j].name);
+      }
+    }
+    if (existingCardNames.includes(e.target.value)) return;
+    setNewCardName(e.target.value);
   }
-  const handleAddNewCard = (columnId) => {
-    if (newCardName ==='') return;
-    let newCardId = 0;
-    for (let i=0; i<columns.length; i++) { newCardId += columns[i].cards.length; }
-    const newCard = {id: newCardId, name: newCardName };
-    const updatedCards = [...columns.find(column => column.id === columnId).cards, newCard];
-    const updatedColumn = {...columns.find(column => column.id === columnId), cards: updatedCards};
-    const updatedColumns = columns.map(column => column.id === columnId ? updatedColumn : column);
+  const handleAddNewCard = (columnName) => {
+    const newCard = {name: newCardName };
+    const updatedCards = [...columns.find(column => column.name === columnName).cards, newCard];
+    const updatedColumn = {...columns.find(column => column.name === columnName), cards: updatedCards};
+    const updatedColumns = columns.map(column => column.name === columnName ? updatedColumn : column);
     setColumns(updatedColumns);
     setNewCardName('');
   }
@@ -32,12 +35,12 @@ const App = () => {
     <div className="App">
       <main className='board'>
         { columns.map(column =>
-          <div key={column.id} className='column'>
+          <div key={column.name} className='column'>
             <h3>{column.name}</h3>
             <input type='text' value={newCardName} onChange={e => handleNewCardNameChange(e)} placeholder='Enter new card name'/>
-            <button onClick={() => handleAddNewCard(column.id)}>+</button>
-            <Column id={column.id}>
-              {column.cards.map(card =><Card key={card.id} id={card.id}>{card.name}</Card>)}
+            <button onClick={() => handleAddNewCard(column.name)}>+</button>
+            <Column id={column.name}>
+              {column.cards.map(card =><Card key={card.name} id={card.name}>{card.name}</Card>)}
             </Column>
           </div>
         )}
