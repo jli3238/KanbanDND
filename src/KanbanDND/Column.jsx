@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Column = (props) => {
+const Column = props => {
     const drop = e => {
         e.preventDefault();
         const cardId = e.dataTransfer.getData('cardId');

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Column from '../src/Column';
-import Card from '../src/Card';
-import './index.css';
+import Column from './Column';
+import Card from './Card';
+import './KanbanDND.css';
 
-const App = () => {
+const KanbanDND = () => {
   const [columns, setColumns] = useState([]);
   const [newCardName, setNewCardName] = useState('');
   const columnsApi = 'data/columns.json';
@@ -13,7 +13,7 @@ const App = () => {
         .then(result => setColumns(result), error => console.log(error));
       } catch (error) { console.log(error); }
   }, []);
-  const handleNewCardNameChange = (e) => {
+  const handleNewCardNameChange = e => {
     let existingCardNames = [];
     for(let i=0; i<columns.length; i++) {
       for(let j=0; j<columns[i].cards.length; j++) {
@@ -24,6 +24,7 @@ const App = () => {
     setNewCardName(e.target.value);
   }
   const handleAddNewCard = (columnName) => {
+    if (newCardName.trim() === '') return;
     const newCard = {name: newCardName };
     const updatedCards = [...columns.find(column => column.name === columnName).cards, newCard];
     const updatedColumn = {...columns.find(column => column.name === columnName), cards: updatedCards};
@@ -37,7 +38,7 @@ const App = () => {
         { columns.map(column =>
           <div key={column.name} className='column'>
             <h3>{column.name}</h3>
-            <input type='text' value={newCardName} onChange={e => handleNewCardNameChange(e)} placeholder='Enter new card name'/>
+            <input type='text' value={newCardName} onChange={handleNewCardNameChange} placeholder='Enter new card name'/>
             <button onClick={() => handleAddNewCard(column.name)}>+</button>
             <Column id={column.name}>
               {column.cards.map(card =><Card key={card.name} id={card.name}>{card.name}</Card>)}
@@ -49,4 +50,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default KanbanDND;
